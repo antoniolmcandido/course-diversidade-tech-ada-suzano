@@ -1,0 +1,125 @@
+Instalação do servidor de banco de dados Postgresql;
+
+Atualiza a lista de pacotes e programas que podem ser instalados, somente isso e mais nada.
+sudo apt-get update
+
+Atualiza o sistema. Baixa e instala pacotes de atualização dos programas instalados no seu computador.
+sudo apt-get upgrade 
+
+Instalando o postgres
+sudo apt-get install postgresql
+
+Verificando informações da instalação
+apt show postgresql
+
+Checando status postgres
+service postgresql status
+
+Start e Stop service postgres
+sudo service postgresql start
+sudo service postgresql stop
+
+Listando usuários 
+sudo cat /etc/passwd
+
+Remover usuários
+sudo userdel -r postgres
+
+Acessando o postgres pela base de dados padrão
+sudo -u postgres psql
+
+Listando databases do postgres 
+\l
+
+Sair do postgres
+\q
+
+Listando user do postgres pelo psql
+\du
+
+Definindo senha para user postgres
+\password postgres
+
+Listando usuários do postgres
+SELECT usename FROM pg_user;
+
+Criando novo user
+sudo -u postgres createuser --interactive
+
+Arquivo de configuração do postgres (https://www.postgresql.org/docs/current/config-setting.html)
+sudo gedit /etc/postgresql/12/main/postgresql.conf
+
+Verificando porta do postgres
+ss -nlt
+
+Arquivo de configuração de conexão do postgres (https://www.postgresql.org/docs/current/auth-pg-hba-conf.html)
+sudo gedit /etc/postgresql/12/main/pg_hba.conf
+
+Removendo o postegresql
+sudo apt-get --purge remove postgresql postgresql-client postgresql-client-common
+
+Limpeza dos arquivos não utilizados, é uma recomendação do próprio SO, quando instalamos programas com a função apt-get.
+sudo apt-get autoremove
+
+
+Instalação Ferramenta de Administração de Banco de Dados;
+
+Instalação DBeaver
+sudo apt-get install dbeaver-ce
+
+Executar aplicação
+dbeaver-ce package
+
+Removendo o DBeaver
+sudo apt-get remove dbeaver-ce
+
+Conexão com o servidor de banco de dados.
+
+host: localhost
+database: postgres
+username: postgres
+password: postgres
+
+Conexão com o servidor de banco de dados.
+
+Instalando o Power Architect (https://franciscochaves.com.br/blog/instale-o-sql-power-architect-no-ubuntu)
+
+Criação da pasta para instalação
+mkdir $HOME/.sql-power-architect
+
+Acessando diretório para download
+cd $HOME/.sql-power-architect
+
+Download arquivo para instalação
+curl -OL http://www.bestofbi.com/downloads/architect/1.0.9/SQL-Power-Architect-generic-1.0.9.tar.gz
+
+Descompactando arquivo, na pasta de download
+tar -vzxf SQL-Power-Architect-generic-*.tar.gz -C $HOME/.sql-power-architect
+
+Renomeia a pasta para remover a versão
+mv $HOME/.sql-power-architect/architect-* $HOME/.sql-power-architect/architect
+
+Imagem para o atalha
+curl -o ~/.sql-power-architect/architect/architect.png -OL https://github.com/SQLPower/power-architect/raw/master/src/main/resources/icons/architect128.png
+
+Criação do atalho no sistema
+echo -e "[Desktop Entry]\n
+Version=1.0\n
+Name=SQL Power Architect Community Edition\n
+Exec=java -jar /home/${USER}/.sql-power-architect/architect/architect.jar\n
+Icon=/home/${USER}/.sql-power-architect/architect/architect.png\n
+Type=Application\n
+Comment=Software for database modeling\n
+Path=/home/${USER}/.sql-power-architect/architect\n
+Terminal=false\n
+StartupNotify=true\n
+Categories=Development;" | tee $HOME/.local/share/applications/sql-power-architect.desktop
+
+Criação de atalho na área de trabalho
+cp $HOME/.local/share/applications/sql-power-architect.desktop $HOME/Desktop
+
+Removendo o programa
+rm -R $HOME/.sql-power-architect
+
+Removendo do menu
+rm $HOME/Desktop/sql-power-architect.desktop
